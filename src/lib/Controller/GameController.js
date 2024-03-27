@@ -5,35 +5,43 @@ class GameController extends AbstractController {
         super();
         this.canvas = canvas;
         this.snakeModel = snakeModel;
-        this.currentDirection = 'right';
+        this.currentDirection = ['right'];
 
         window.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowLeft':
-                    if (this.currentDirection !== 'right') {
-                        this.currentDirection = 'left';
-                    }
-                    break;
-                case 'ArrowRight':
-                    if (this.currentDirection !== 'left') {
-                        this.currentDirection = 'right';
-                    }
-                    break;
-                case 'ArrowUp':
-                    if (this.currentDirection !== 'down') {
-                        this.currentDirection = 'up';
-                    }
-                    break;
-                case 'ArrowDown':
-                    if (this.currentDirection !== 'up') {
-                        this.currentDirection = 'down';
-                    }
-                    break;
-                default:
-                    console.log('fuck');
+            if (this.currentDirection.length <= 3) {
+                switch (event.key) {
+                    case 'ArrowLeft':
+                        if (this.currentDirection.at(-1) !== ('right')) {
+                            this.currentDirection.push('left');
+                        }
+                        break;
+                    case 'ArrowRight':
+                        if (this.currentDirection.at(-1) !== ('left')) {
+                            this.currentDirection.push('right');
+                        }
+                        break;
+                    case 'ArrowUp':
+                        if (this.currentDirection.at(-1) !== ('down')) {
+                            this.currentDirection.push('up');
+                        }
+                        break;
+                    case 'ArrowDown':
+                        if (this.currentDirection.at(-1) !== ('up')) {
+                            this.currentDirection.push('down');
+                        }
+                        break;
+                    default:
+                        console.log('fuck');
+                }
             }
-            this.snakeModel.updateSnakePosition(this.currentDirection);
         });
+
+        setInterval(() => {
+            if (this.currentDirection.length > 1) {
+                this.currentDirection.shift();
+            }
+            this.snakeModel.updateSnakePosition(this.currentDirection[0]);
+        }, 300);
     }
 }
 
