@@ -5,20 +5,28 @@ class Canvas extends AbstractView {
         super(model);
 
         this._rootEl = document.querySelector('#canvas');
-        this.canvasBorder = 500;
         this.ctx = this.rootEl.getContext('2d');
+        this.canvasBorderLength = 500;
+        this.nrOfRows = 10;
+        this.blockBorderLength = this.canvasBorderLength / this.nrOfRows;
     }
 
-    drawOnCanvas(params, color = 'black') {
-        const {x, y, width, height} = params;
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvasBorderLength, this.canvasBorderLength);
+    }
 
+    drawBlockOnCanvas(params, color = 'black') {
+        const x = params.x * this.blockBorderLength;
+        const y = params.y * this.blockBorderLength;
+
+        console.log(x, y);
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(x, y, width, height);
+        this.ctx.fillRect(x, y, this.blockBorderLength, this.blockBorderLength);
     }
 
     render() {
-        this.rootEl.width = this.canvasBorder;
-        this.rootEl.height = this.canvasBorder;
+        this.rootEl.width = this.canvasBorderLength;
+        this.rootEl.height = this.canvasBorderLength;
     }
 }
 

@@ -1,14 +1,6 @@
 import './style.scss';
-import Canvas from './lib/View /Canvas';
+import GameView from './lib/View /GameView';
 
-const canvas = new Canvas();
-canvas.render();
+const gameView = new GameView();
 
-const params = {
-    x: 10,
-    y: 0,
-    width: 300,
-    height: 100,
-};
-
-canvas.drawOnCanvas(params, 'green');
+gameView.render();
