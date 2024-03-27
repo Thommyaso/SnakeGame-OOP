@@ -1,10 +1,11 @@
 import AbstractController from '../Abstracts/controller';
 
 class GameController extends AbstractController {
-    constructor(canvas, snakeModel) {
+    constructor(canvas, snakeModel, foodModel) {
         super();
         this.canvas = canvas;
         this.snakeModel = snakeModel;
+        this.foodModel = foodModel;
         this.currentDirection = ['right'];
 
         window.addEventListener('keydown', (event) => {
@@ -41,6 +42,7 @@ class GameController extends AbstractController {
                 this.currentDirection.shift();
             }
             this.snakeModel.updateSnakePosition(this.currentDirection[0]);
+            this.canvas.drawBlockOnCanvas(this.foodModel.get('coordinates'));
         }, 300);
     }
 }

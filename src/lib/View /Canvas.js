@@ -19,7 +19,6 @@ class Canvas extends AbstractView {
         const x = params.x * this.blockBorderLength;
         const y = params.y * this.blockBorderLength;
 
-        console.log(x, y);
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, this.blockBorderLength, this.blockBorderLength);
     }
