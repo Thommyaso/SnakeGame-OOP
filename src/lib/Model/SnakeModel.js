@@ -13,42 +13,15 @@ class SnakeModel extends AbstractModel {
         };
     }
 
-    updateSnakePosition(direction) {
+    addSnakeSegment(coordinates) {
         const snakeBody = this.get('bodySegments');
-        const newSegment = {...snakeBody[snakeBody.length - 1]};
 
-        switch (direction) {
-            case 'up':
-                if (newSegment.y > 0) {
-                    newSegment.y -= 1;
-                } else {
-                    newSegment.y = 9;
-                }
-                break;
-            case 'down':
-                if (newSegment.y < 9) {
-                    newSegment.y += 1;
-                } else {
-                    newSegment.y = 0;
-                }
-                break;
-            case 'left':
-                if (newSegment.x > 0) {
-                    newSegment.x -= 1;
-                } else {
-                    newSegment.x = 9;
-                }
-                break;
-            case 'right':
-                if (newSegment.x < 9) {
-                    newSegment.x += 1;
-                } else {
-                    newSegment.x = 0;
-                }
-                break;
-            default:
-                console.error('unknownCommand');
-        }
+        snakeBody.push(coordinates);
+        this.fireEvent('snakeMovement', snakeBody);
+    }
+
+    updateSnakePosition(newSegment) {
+        const snakeBody = this.get('bodySegments');
 
         snakeBody.shift();
         snakeBody.push(newSegment);
