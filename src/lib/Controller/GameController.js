@@ -7,6 +7,9 @@ class GameController extends AbstractController {
         this.snakeModel = snakeModel;
         this.foodModel = foodModel;
         this.currentDirection = ['right'];
+        this.interval = setInterval(() => {
+            this.renderGame();
+        }, 300);
 
         window.addEventListener('keydown', (event) => {
             if (this.currentDirection.length <= 3) {
@@ -37,9 +40,6 @@ class GameController extends AbstractController {
             }
         });
 
-        setInterval(() => {
-            this.renderGame();
-        }, 300);
     }
 
     isMovingHorizontally() {
@@ -111,6 +111,19 @@ class GameController extends AbstractController {
         return false;
     }
 
+    detectSnakeColision() {
+        const snakeBody = this.snakeModel.get('bodySegments');
+
+        let hasColided = false;
+
+        snakeBody.forEach((segment) => {
+            if (this.collisionPrediction(this.nextHeadPosition(), segment)) {
+                hasColided = true;
+            }
+        });
+        return hasColided;
+    }
+
     renderGame() {
         const snakeBody = this.snakeModel.get('bodySegments');
         const foodCoords = this.foodModel.get('coordinates');
@@ -118,7 +131,11 @@ class GameController extends AbstractController {
         if (this.currentDirection.length > 1) {
             this.currentDirection.shift();
         }
-        if (this.collisionPrediction(this.nextHeadPosition(), foodCoords)) {
+
+        if (this.detectSnakeColision()) {
+            clearInterval(this.interval);
+            return;
+        } else if (this.collisionPrediction(this.nextHeadPosition(), foodCoords)) {
             this.snakeModel.addSnakeSegment(foodCoords);
             this.foodModel.generateFood(snakeBody);
         } else {
