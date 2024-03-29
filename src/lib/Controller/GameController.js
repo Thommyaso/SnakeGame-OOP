@@ -136,45 +136,27 @@ class GameController extends AbstractController {
         const snakeBody = this.snakeModel.get('bodySegments');
         const head = snakeBody.at(-1);
         const allBorders = this.borderModel.get('borderSegments');
-        const maxIndex = this.canvas.nrOfRows - 1;
 
         let borderCollision = false;
 
         for (const key in allBorders) {
             if (key === this.currentDirection[0]) {
-                const array = allBorders[key];
+                const borderSide = allBorders[key];
+                const xValue = borderSide.x;
+                const yValue = borderSide.y;
 
-                switch (key) {
-                    case 'left' :
-                        array.y.forEach((borderPoint) => {
-                            if (this.collisionPrediction(head, {x: 0, y: borderPoint})) {
-                                borderCollision = true;
-                            }
-                        });
-                        break;
-                    case 'right' :
-                        array.y.forEach((borderPoint) => {
-                            if (this.collisionPrediction(head, {x: maxIndex, y: borderPoint})) {
-                                borderCollision = true;
-                            }
-                        });
-                        break;
-                    case 'up' :
-                        array.x.forEach((borderPoint) => {
-                            if (this.collisionPrediction(head, {x: borderPoint, y: 0})) {
-                                borderCollision = true;
-                            }
-                        });
-                        break;
-                    case 'down' :
-                        array.x.forEach((borderPoint) => {
-                            if (this.collisionPrediction(head, {x: borderPoint, y: maxIndex})) {
-                                borderCollision = true;
-                            }
-                        });
-                        break;
-                    default:
-                        borderCollision = false;
+                if (Array.isArray(yValue)) {
+                    yValue.forEach((borderPoint) => {
+                        if (this.collisionPrediction(head, {x: xValue, y: borderPoint})) {
+                            borderCollision = true;
+                        }
+                    });
+                } else if (Array.isArray(xValue)) {
+                    xValue.forEach((borderPoint) => {
+                        if (this.collisionPrediction(head, {x: borderPoint, y: yValue})) {
+                            borderCollision = true;
+                        }
+                    });
                 }
             }
         }
