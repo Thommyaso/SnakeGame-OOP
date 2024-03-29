@@ -1,46 +1,31 @@
 import AbstractController from '../Abstracts/controller';
 
 class GameController extends AbstractController {
-    constructor(canvas, snakeModel, foodModel, borderModel) {
-        super();
+    constructor(model, canvas, gameElements) {
+        super(model);
         this.canvas = canvas;
-        this.snakeModel = snakeModel;
-        this.foodModel = foodModel;
-        this.borderModel = borderModel;
-        this.currentDirection = ['right'];
+        this.snakeModel = gameElements.snakeModel;
+        this.foodModel = gameElements.foodModel;
+        this.borderModel = gameElements.borderModel;
+        this.currentDirection = [];
+        this.interval = null;
+
+        this.startInterval = this.startInterval.bind(this);
+    }
+
+    setStartingConditions(timing) {
+        clearInterval(this.interval);
+        this.model.resetScore();
+        this.currentDirection = [this.model.get('startingDirection')];
+        this.snakeModel.set('bodySegments', [...this.model.get('snakeStartingPosition')]);
+        this.startInterval(timing);
+        this.foodModel.generateFood(this.snakeModel.get('bodySegments'));
+    }
+
+    startInterval(timing) {
         this.interval = setInterval(() => {
             this.renderGame();
-        }, 300);
-
-        window.addEventListener('keydown', (event) => {
-            if (this.currentDirection.length <= 3) {
-                switch (event.key) {
-                    case 'ArrowLeft':
-                        if (this.currentDirection.at(-1) !== ('right')) {
-                            this.currentDirection.push('left');
-                        }
-                        break;
-                    case 'ArrowRight':
-                        if (this.currentDirection.at(-1) !== ('left')) {
-                            this.currentDirection.push('right');
-                        }
-                        break;
-                    case 'ArrowUp':
-                        if (this.currentDirection.at(-1) !== ('down')) {
-                            this.currentDirection.push('up');
-                        }
-                        break;
-                    case 'ArrowDown':
-                        if (this.currentDirection.at(-1) !== ('up')) {
-                            this.currentDirection.push('down');
-                        }
-                        break;
-                    default:
-                        console.log(event.key);
-                }
-            }
-        });
-
+        }, timing);
     }
 
     isMovingHorizontally() {
@@ -160,7 +145,6 @@ class GameController extends AbstractController {
                 }
             }
         }
-
         return borderCollision;
     }
 
@@ -177,6 +161,7 @@ class GameController extends AbstractController {
 
             return;
         } else if (this.detectFoodConsumption()) {
+            this.model.updateScore();
             this.snakeModel.addSnakeSegment(foodCoords);
             this.foodModel.generateFood(snakeBody);
         } else {

@@ -1,6 +1,8 @@
 import './style.scss';
 import GameView from './lib/View /GameView';
+import GameSettingsModel from './lib/Model/GameSettingsModel';
 
-const gameView = new GameView();
+const gameSettingsModel = new GameSettingsModel();
+const gameView = new GameView(gameSettingsModel);
 
 gameView.render();

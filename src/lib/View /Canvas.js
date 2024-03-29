@@ -4,8 +4,7 @@ class Canvas extends AbstractView {
     constructor(model) {
         super(model);
 
-        this._rootEl = document.querySelector('#canvas');
-        this.ctx = this.rootEl.getContext('2d');
+        this.ctx = null;
         this.playfieldLength = 500;
         this.nrOfRows = 10;
         this.blockBorderLength = this.playfieldLength / this.nrOfRows;
@@ -63,8 +62,11 @@ class Canvas extends AbstractView {
     }
 
     render() {
-        this.rootEl.width = this.totalCanvasFieldLength;
-        this.rootEl.height = this.totalCanvasFieldLength;
+        const canvas = document.createElement('canvas');
+        canvas.width = this.totalCanvasFieldLength;
+        canvas.height = this.totalCanvasFieldLength;
+        this.rootEl = canvas;
+        this.ctx = this.rootEl.getContext('2d');
     }
 }
 
