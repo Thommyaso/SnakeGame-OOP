@@ -146,28 +146,28 @@ class GameController extends AbstractController {
 
                 switch (key) {
                     case 'left' :
-                        array.forEach((borderPoint) => {
+                        array.y.forEach((borderPoint) => {
                             if (this.collisionPrediction(head, {x: 0, y: borderPoint})) {
                                 borderCollision = true;
                             }
                         });
                         break;
                     case 'right' :
-                        array.forEach((borderPoint) => {
+                        array.y.forEach((borderPoint) => {
                             if (this.collisionPrediction(head, {x: maxIndex, y: borderPoint})) {
                                 borderCollision = true;
                             }
                         });
                         break;
                     case 'up' :
-                        array.forEach((borderPoint) => {
+                        array.x.forEach((borderPoint) => {
                             if (this.collisionPrediction(head, {x: borderPoint, y: 0})) {
                                 borderCollision = true;
                             }
                         });
                         break;
                     case 'down' :
-                        array.forEach((borderPoint) => {
+                        array.x.forEach((borderPoint) => {
                             if (this.collisionPrediction(head, {x: borderPoint, y: maxIndex})) {
                                 borderCollision = true;
                             }

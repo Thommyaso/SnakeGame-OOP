@@ -9,7 +9,7 @@ class Canvas extends AbstractView {
         this.playfieldLength = 500;
         this.nrOfRows = 10;
         this.blockBorderLength = this.playfieldLength / this.nrOfRows;
-        this.canvasBorderWidth = 30;
+        this.canvasBorderWidth = 7;
         this.totalCanvasFieldLength = this.playfieldLength + 2 * this.canvasBorderWidth;
     }
 
@@ -27,46 +27,37 @@ class Canvas extends AbstractView {
 
     drawBorderOnCanvas(borderSegments) {
         const farSideBorderPoint = this.blockBorderLength * 10 + this.canvasBorderWidth;
-        for (const key in borderSegments) {
-            switch (key) {
-                case 'left':
-                    borderSegments[key].forEach((y) => {
-                        const coordY = y * this.blockBorderLength + this.canvasBorderWidth;
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillRect(0, coordY, this.canvasBorderWidth, this.blockBorderLength);
-                    });
-                    break;
-                case 'right':
-                    borderSegments[key].forEach((y) => {
-                        const coordY = y * this.blockBorderLength + this.canvasBorderWidth;
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillRect(farSideBorderPoint, coordY, this.canvasBorderWidth, this.blockBorderLength);
-                    });
-                    break;
-                case 'down':
-                    borderSegments[key].forEach((x) => {
-                        const coordX = x * this.blockBorderLength + this.canvasBorderWidth;
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillRect(coordX, farSideBorderPoint, this.blockBorderLength, this.canvasBorderWidth);
-                    });
-                    break;
-                case 'up':
-                    borderSegments[key].forEach((x) => {
-                        const coordX = x * this.blockBorderLength + this.canvasBorderWidth;
-                        this.ctx.fillStyle = 'black';
-                        this.ctx.fillRect(coordX, 0, this.blockBorderLength, this.canvasBorderWidth);
-                    });
-                    break;
-                case 'corners':
-                    borderSegments[key].forEach((coords) => {
-                        const coordX = coords.x === 9 ? this.blockBorderLength * 10 + this.canvasBorderWidth : 0;
-                        const coordY = coords.y === 9 ? this.blockBorderLength * 10 + this.canvasBorderWidth : 0;
 
-                        this.ctx.fillRect(coordX, coordY, this.blockBorderLength, this.canvasBorderWidth);
-                    });
-                    break;
-                default:
-                    return;
+        for (const key in borderSegments) {
+            const borderSide = borderSegments[key];
+            const xValue = borderSide.x;
+            const yValue = borderSide.y;
+
+            if (key === 'corners') {
+                borderSide.forEach((corner) => {
+                    const coordX = corner.x === 9 ? farSideBorderPoint : 0;
+                    const coordY = corner.y === 9 ? farSideBorderPoint : 0;
+
+                    this.ctx.fillRect(coordX, coordY, this.canvasBorderWidth, this.canvasBorderWidth);
+                });
+            } else if (Array.isArray(xValue)) {
+                const coordY = yValue === 9 ? farSideBorderPoint : 0;
+
+                xValue.forEach((x) => {
+                    const coordX = x * this.blockBorderLength + this.canvasBorderWidth;
+
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.fillRect(coordX, coordY, this.blockBorderLength, this.canvasBorderWidth);
+                });
+            } else if (Array.isArray(yValue)) {
+                const coordX = xValue === 9 ? farSideBorderPoint : 0;
+
+                yValue.forEach((y) => {
+                    const coordY = y * this.blockBorderLength + this.canvasBorderWidth;
+
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.fillRect(coordX, coordY, this.canvasBorderWidth, this.blockBorderLength);
+                });
             }
         }
     }

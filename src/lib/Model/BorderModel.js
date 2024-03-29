@@ -6,10 +6,10 @@ class BorderModel extends AbstractModel {
 
         this.properties = {
             borderSegments: {
-                left: [0, 1, 2, 3, 6, 7, 8, 9],
-                right: [0, 1, 2, 3, 6, 7, 8, 9],
-                up: [0, 1, 2, 3, 6, 7, 8, 9],
-                down: [0, 1, 2, 3, 6, 7, 8, 9],
+                left: {x: 0, y: [0, 1, 2, 3, 6, 7, 8, 9]},
+                right: {x: 9, y: [0, 1, 2, 3, 6, 7, 8, 9]},
+                up: {y: 0, x: [0, 1, 2, 3, 6, 7, 8, 9]},
+                down: {y: 9, x: [0, 1, 2, 3, 6, 7, 8, 9]},
                 corners: [{x: 0, y: 0}, {x: 9, y: 0}, {x: 0, y: 9}, {x: 9, y: 9}],
             },
             borderCorners: {
