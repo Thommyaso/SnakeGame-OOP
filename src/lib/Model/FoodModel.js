@@ -5,6 +5,8 @@ class FoodModel extends AbstractModel {
         super();
 
         this.properties = {
+            color: 'green',
+            highestRandomNr: null,
             coordinates: {
                 x: null,
                 y: null,
@@ -15,8 +17,8 @@ class FoodModel extends AbstractModel {
 
     _getRandomPoint() {
         const randomPoint = {
-            x: Math.floor(Math.random() * 10),
-            y: Math.floor(Math.random() * 10),
+            x: Math.floor(Math.random() * this.get('highestRandomNr')),
+            y: Math.floor(Math.random() * this.get('highestRandomNr')),
         };
         return randomPoint;
     }
@@ -41,9 +43,10 @@ class FoodModel extends AbstractModel {
         this.set('coordinates', randomPoint);
     }
 
-    static createFoodModel(snakeBody) {
+    static createFoodModel(snakeBody, nrOfSegments) {
         const foodModel = new FoodModel();
 
+        foodModel.set('highestRandomNr', nrOfSegments);
         foodModel.generateFood(snakeBody);
         return foodModel;
     }

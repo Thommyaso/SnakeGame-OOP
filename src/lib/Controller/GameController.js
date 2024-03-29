@@ -1,11 +1,12 @@
 import AbstractController from '../Abstracts/controller';
 
 class GameController extends AbstractController {
-    constructor(canvas, snakeModel, foodModel) {
+    constructor(canvas, snakeModel, foodModel, borderModel) {
         super();
         this.canvas = canvas;
         this.snakeModel = snakeModel;
         this.foodModel = foodModel;
+        this.borderModel = borderModel;
         this.currentDirection = ['right'];
         this.interval = setInterval(() => {
             this.renderGame();
@@ -35,7 +36,7 @@ class GameController extends AbstractController {
                         }
                         break;
                     default:
-                        console.log('fuck');
+                        console.log(event.key);
                 }
             }
         });
@@ -51,17 +52,18 @@ class GameController extends AbstractController {
     nextHeadPosition() {
         const snakeBody = this.snakeModel.get('bodySegments');
         const newSegment = {...snakeBody.at(-1)};
+        const lastIndex = this.canvas.nrOfRows - 1;
 
         switch (this.currentDirection[0]) {
             case 'up':
                 if (newSegment.y > 0) {
                     newSegment.y -= 1;
                 } else {
-                    newSegment.y = 9;
+                    newSegment.y = lastIndex;
                 }
                 break;
             case 'down':
-                if (newSegment.y < 9) {
+                if (newSegment.y < lastIndex) {
                     newSegment.y += 1;
                 } else {
                     newSegment.y = 0;
@@ -71,11 +73,11 @@ class GameController extends AbstractController {
                 if (newSegment.x > 0) {
                     newSegment.x -= 1;
                 } else {
-                    newSegment.x = 9;
+                    newSegment.x = lastIndex;
                 }
                 break;
             case 'right':
-                if (newSegment.x < 9) {
+                if (newSegment.x < lastIndex) {
                     newSegment.x += 1;
                 } else {
                     newSegment.x = 0;
@@ -111,6 +113,12 @@ class GameController extends AbstractController {
         return false;
     }
 
+    detectFoodConsumption() {
+        const foodCoords = this.foodModel.get('coordinates');
+
+        return this.collisionPrediction(this.nextHeadPosition(), foodCoords);
+    }
+
     detectSnakeColision() {
         const snakeBody = this.snakeModel.get('bodySegments');
 
@@ -124,6 +132,56 @@ class GameController extends AbstractController {
         return hasColided;
     }
 
+    detectBorderCollision() {
+        const snakeBody = this.snakeModel.get('bodySegments');
+        const head = snakeBody.at(-1);
+        const allBorders = this.borderModel.get('borderSegments');
+        const maxIndex = this.canvas.nrOfRows - 1;
+
+        let borderCollision = false;
+
+        for (const key in allBorders) {
+            if (key === this.currentDirection[0]) {
+                const array = allBorders[key];
+
+                switch (key) {
+                    case 'left' :
+                        array.forEach((borderPoint) => {
+                            if (this.collisionPrediction(head, {x: 0, y: borderPoint})) {
+                                borderCollision = true;
+                            }
+                        });
+                        break;
+                    case 'right' :
+                        array.forEach((borderPoint) => {
+                            if (this.collisionPrediction(head, {x: maxIndex, y: borderPoint})) {
+                                borderCollision = true;
+                            }
+                        });
+                        break;
+                    case 'up' :
+                        array.forEach((borderPoint) => {
+                            if (this.collisionPrediction(head, {x: borderPoint, y: 0})) {
+                                borderCollision = true;
+                            }
+                        });
+                        break;
+                    case 'down' :
+                        array.forEach((borderPoint) => {
+                            if (this.collisionPrediction(head, {x: borderPoint, y: maxIndex})) {
+                                borderCollision = true;
+                            }
+                        });
+                        break;
+                    default:
+                        borderCollision = false;
+                }
+            }
+        }
+
+        return borderCollision;
+    }
+
     renderGame() {
         const snakeBody = this.snakeModel.get('bodySegments');
         const foodCoords = this.foodModel.get('coordinates');
@@ -132,15 +190,16 @@ class GameController extends AbstractController {
             this.currentDirection.shift();
         }
 
-        if (this.detectSnakeColision()) {
+        if (this.detectSnakeColision() || this.detectBorderCollision()) {
             clearInterval(this.interval);
+
             return;
-        } else if (this.collisionPrediction(this.nextHeadPosition(), foodCoords)) {
+        } else if (this.detectFoodConsumption()) {
             this.snakeModel.addSnakeSegment(foodCoords);
             this.foodModel.generateFood(snakeBody);
         } else {
             this.snakeModel.updateSnakePosition(this.nextHeadPosition());
-            this.canvas.drawBlockOnCanvas(foodCoords);
+            this.canvas.drawBlockOnCanvas(foodCoords, this.foodModel.get('color'));
         }
     }
 }
