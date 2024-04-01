@@ -3,9 +3,9 @@ import AbstractView from '../Abstracts/view';
 class GameConsole extends AbstractView {
     constructor(model) {
         super(model);
+
         this.startBtn = null;
         this.scoreBoard = null;
-
     }
 
     showScore() {

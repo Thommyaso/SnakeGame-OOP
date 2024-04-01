@@ -5,8 +5,9 @@ class GameSettingsModel extends AbstractModel {
         super();
         this.properties = {
             score: 0,
+            cellCount: 10,
             isPlaying: true,
-            startSpeed: 300,
+            startSpeed: 150,
             startingDirection: 'right',
             snakeStartingPosition: [
                 {x: 1, y: 2},

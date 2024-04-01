@@ -37,7 +37,7 @@ class GameController extends AbstractController {
     nextHeadPosition() {
         const snakeBody = this.snakeModel.get('bodySegments');
         const newSegment = {...snakeBody.at(-1)};
-        const lastIndex = this.canvas.nrOfRows - 1;
+        const lastIndex = this.model.get('cellCount') - 1;
 
         switch (this.currentDirection[0]) {
             case 'up':
@@ -121,34 +121,39 @@ class GameController extends AbstractController {
         const snakeBody = this.snakeModel.get('bodySegments');
         const head = snakeBody.at(-1);
         const allBorders = this.borderModel.get('borderSegments');
+        const lastIndex = this.model.get('cellCount') - 1;
 
-        let borderCollision = false;
+        let hasColided = false;
 
-        for (const key in allBorders) {
-            if (key === this.currentDirection[0]) {
-                const borderSide = allBorders[key];
-                const xValue = borderSide.x;
-                const yValue = borderSide.y;
-
-                if (Array.isArray(yValue)) {
-                    yValue.forEach((borderPoint) => {
-                        if (this.collisionPrediction(head, {x: xValue, y: borderPoint})) {
-                            borderCollision = true;
-                        }
-                    });
-                } else if (Array.isArray(xValue)) {
-                    xValue.forEach((borderPoint) => {
-                        if (this.collisionPrediction(head, {x: borderPoint, y: yValue})) {
-                            borderCollision = true;
-                        }
-                    });
+        switch (this.currentDirection[0]) {
+            case 'left':
+                if (head.x === 0) {
+                    hasColided = allBorders.horizontalBorder[head.y];
                 }
-            }
+                break;
+            case 'right':
+                if (head.x === lastIndex) {
+                    hasColided = allBorders.horizontalBorder[head.y];
+                }
+                break;
+            case 'up':
+                if (head.y === 0) {
+                    hasColided = allBorders.horizontalBorder[head.x];
+                }
+                break;
+            case 'down':
+                if (head.y === lastIndex) {
+                    hasColided = allBorders.horizontalBorder[head.x];
+                }
+                break;
+            default :
+                hasColided = false;
         }
-        return borderCollision;
+        return hasColided;
     }
 
     renderGame() {
+        console.log('raz');
         const snakeBody = this.snakeModel.get('bodySegments');
         const foodCoords = this.foodModel.get('coordinates');
 

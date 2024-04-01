@@ -1,15 +1,16 @@
 import AbstractView from '../Abstracts/view';
 
 class Canvas extends AbstractView {
-    constructor(model) {
+    constructor(model, borderModel) {
         super(model);
 
         this.ctx = null;
         this.playfieldLength = 500;
-        this.nrOfRows = 10;
-        this.blockBorderLength = this.playfieldLength / this.nrOfRows;
+        this.cellCount = model.get('cellCount');
+        this.blockBorderLength = this.playfieldLength / this.cellCount;
         this.canvasBorderWidth = 7;
         this.totalCanvasFieldLength = this.playfieldLength + 2 * this.canvasBorderWidth;
+        this.borderModel = borderModel;
     }
 
     clearGameArea() {
@@ -25,40 +26,26 @@ class Canvas extends AbstractView {
     }
 
     drawBorderOnCanvas(borderSegments) {
-        const farSideBorderPoint = this.blockBorderLength * 10 + this.canvasBorderWidth;
+        const farSideBorderPoint = this.blockBorderLength * this.cellCount + this.canvasBorderWidth;
 
-        for (const key in borderSegments) {
-            const borderSide = borderSegments[key];
-            const xValue = borderSide.x;
-            const yValue = borderSide.y;
+        borderSegments.horizontalBorder.forEach((x, index) => {
+            if (x === true) {
+                const coordX = index * this.blockBorderLength + this.canvasBorderWidth;
 
-            if (key === 'corners') {
-                borderSide.forEach((corner) => {
-                    const coordX = corner.x === 9 ? farSideBorderPoint : 0;
-                    const coordY = corner.y === 9 ? farSideBorderPoint : 0;
-
-                    this.ctx.fillRect(coordX, coordY, this.canvasBorderWidth, this.canvasBorderWidth);
-                });
-            } else if (Array.isArray(xValue)) {
-                const coordY = yValue === 9 ? farSideBorderPoint : 0;
-
-                xValue.forEach((x) => {
-                    const coordX = x * this.blockBorderLength + this.canvasBorderWidth;
-
-                    this.ctx.fillStyle = 'black';
-                    this.ctx.fillRect(coordX, coordY, this.blockBorderLength, this.canvasBorderWidth);
-                });
-            } else if (Array.isArray(yValue)) {
-                const coordX = xValue === 9 ? farSideBorderPoint : 0;
-
-                yValue.forEach((y) => {
-                    const coordY = y * this.blockBorderLength + this.canvasBorderWidth;
-
-                    this.ctx.fillStyle = 'black';
-                    this.ctx.fillRect(coordX, coordY, this.canvasBorderWidth, this.blockBorderLength);
-                });
+                this.ctx.fillStyle = 'black';
+                this.ctx.fillRect(coordX, 0, this.blockBorderLength, this.canvasBorderWidth);
+                this.ctx.fillRect(coordX, farSideBorderPoint, this.blockBorderLength, this.canvasBorderWidth);
             }
-        }
+        });
+        borderSegments.verticalBorder.forEach((y, index) => {
+            if (y === true) {
+                const coordY = index * this.blockBorderLength + this.canvasBorderWidth;
+
+                this.ctx.fillStyle = 'black';
+                this.ctx.fillRect(0, coordY, this.canvasBorderWidth, this.blockBorderLength);
+                this.ctx.fillRect(farSideBorderPoint, coordY, this.canvasBorderWidth, this.blockBorderLength);
+            }
+        });
     }
 
     render() {

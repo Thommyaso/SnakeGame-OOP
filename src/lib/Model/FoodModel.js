@@ -12,7 +12,6 @@ class FoodModel extends AbstractModel {
                 y: null,
             },
         };
-
     }
 
     _getRandomPoint() {
@@ -25,6 +24,7 @@ class FoodModel extends AbstractModel {
 
     _checkIfSpaceIsAvailable(takenSpaces, generatedCoordinates) {
         let isAvailable = true;
+
         takenSpaces.forEach((space) => {
             if (space.x === generatedCoordinates.x && space.y === generatedCoordinates.y) {
                 isAvailable = false;
@@ -43,10 +43,10 @@ class FoodModel extends AbstractModel {
         this.set('coordinates', randomPoint);
     }
 
-    static createFoodModel(snakeBody, nrOfSegments) {
+    static createFoodModel(snakeBody, cellCount) {
         const foodModel = new FoodModel();
 
-        foodModel.set('highestRandomNr', nrOfSegments);
+        foodModel.set('highestRandomNr', cellCount);
         foodModel.generateFood(snakeBody);
         return foodModel;
     }

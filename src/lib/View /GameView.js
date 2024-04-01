@@ -5,15 +5,17 @@ import GameController from '../Controller/GameController';
 import FoodModel from '../Model/FoodModel';
 import BorderModel from '../Model/BorderModel';
 import GameConsole from './GameConsole';
+import levels from '../../levels';
 
 class GameView extends AbstractView {
     constructor(model) {
         super(model);
+
         this.rootEl = document.querySelector('#game');
-        this.canvas = new Canvas();
+        this.borderModel = BorderModel.createBorderModel(levels.borders.level1, model.get('cellCount'));
+        this.canvas = new Canvas(model, this.borderModel);
         this.snakeModel = new SnakeModel();
-        this.borderModel = new BorderModel();
-        this.foodModel = FoodModel.createFoodModel(this.snakeModel.get('bodySegments'), this.canvas.nrOfRows);
+        this.foodModel = FoodModel.createFoodModel(this.snakeModel.get('bodySegments'), this.model.get('cellCount'));
         this.gameController = new GameController(this.model, this.canvas, {
             snakeModel: this.snakeModel,
             foodModel: this.foodModel,
