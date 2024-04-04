@@ -128,12 +128,12 @@ class GameController extends AbstractController {
         switch (this.currentDirection[0]) {
             case 'left':
                 if (head.x === 0) {
-                    hasColided = allBorders.horizontalBorder[head.y];
+                    hasColided = allBorders.verticalBorder[head.y];
                 }
                 break;
             case 'right':
                 if (head.x === lastIndex) {
-                    hasColided = allBorders.horizontalBorder[head.y];
+                    hasColided = allBorders.verticalBorder[head.y];
                 }
                 break;
             case 'up':
@@ -153,7 +153,6 @@ class GameController extends AbstractController {
     }
 
     renderGame() {
-        console.log('raz');
         const snakeBody = this.snakeModel.get('bodySegments');
         const foodCoords = this.foodModel.get('coordinates');
 

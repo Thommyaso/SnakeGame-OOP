@@ -1,3 +1,4 @@
+import './bootstrap.scss';
 import './style.scss';
 import GameView from './lib/View /GameView';
 import GameSettingsModel from './lib/Model/GameSettingsModel';

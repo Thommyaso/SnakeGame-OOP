@@ -6,11 +6,17 @@ class Canvas extends AbstractView {
 
         this.ctx = null;
         this.playfieldLength = 500;
-        this.cellCount = model.get('cellCount');
-        this.blockBorderLength = this.playfieldLength / this.cellCount;
+        this.cellCount = null;
+        this.blockBorderLength = null;
         this.canvasBorderWidth = 7;
-        this.totalCanvasFieldLength = this.playfieldLength + 2 * this.canvasBorderWidth;
+        this.totalCanvasFieldLength = null;
         this.borderModel = borderModel;
+    }
+
+    setVariables() {
+        this.cellCount = this.model.get('cellCount');
+        this.blockBorderLength = this.playfieldLength / this.cellCount;
+        this.totalCanvasFieldLength = this.playfieldLength + 2 * this.canvasBorderWidth;
     }
 
     clearGameArea() {
@@ -48,8 +54,16 @@ class Canvas extends AbstractView {
         });
     }
 
+    updateCanvas() {
+        this.setVariables();
+        this.ctx.clearRect(0, 0, this.totalCanvasFieldLength, this.totalCanvasFieldLength);
+        this.drawBorderOnCanvas(this.borderModel.get('borderSegments'));
+    }
+
     render() {
+        this.setVariables();
         const canvas = document.createElement('canvas');
+        canvas.classList.add('canvas');
         canvas.width = this.totalCanvasFieldLength;
         canvas.height = this.totalCanvasFieldLength;
         this.rootEl = canvas;

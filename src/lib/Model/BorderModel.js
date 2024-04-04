@@ -33,8 +33,9 @@ class BorderModel extends AbstractModel {
         } else {
             middleIndex = segment.length / 2 - 1;
         }
+
         const borderPointToScale = segment[middleIndex];
-        const indexOfInsertion = Math.ceil(newSegment.length / 2);
+        const indexOfInsertion = Math.floor(newSegment.length / 2);
 
         newSegment.splice(indexOfInsertion, 0, borderPointToScale);
 
@@ -67,27 +68,23 @@ class BorderModel extends AbstractModel {
         });
 
         const multiplyAllCenters = () => {
-            newNearsideSegment = this.scaleSegmentsCenter(nearsideBorderPart, newNearsideSegment);
-            newMiddleSegment = this.scaleSegmentsCenter(middleBorderPart, newMiddleSegment);
-            newFarsideSegment = this.scaleSegmentsCenter(farsideBorderPart, newFarsideSegment);
+            for (let nr = unitsLoopCount; nr > 0; nr--) {
+                newNearsideSegment = this.scaleSegmentsCenter(nearsideBorderPart, newNearsideSegment);
+                newMiddleSegment = this.scaleSegmentsCenter(middleBorderPart, newMiddleSegment);
+                newFarsideSegment = this.scaleSegmentsCenter(farsideBorderPart, newFarsideSegment);
+            }
         };
 
         switch (unitsNr % 3) {
             case 0 :
-                for (let nr = unitsLoopCount; nr > 0; nr--) {
-                    multiplyAllCenters();
-                }
+                multiplyAllCenters();
                 break;
             case 1 :
-                for (let nr = unitsLoopCount; nr > 0; nr--) {
-                    multiplyAllCenters();
-                }
+                multiplyAllCenters();
                 newMiddleSegment = this.scaleSegmentsCenter(middleBorderPart, newMiddleSegment);
                 break;
             case 2 :
-                for (let nr = unitsLoopCount; nr > 0; nr--) {
-                    multiplyAllCenters();
-                }
+                multiplyAllCenters();
                 newNearsideSegment = this.scaleSegmentsCenter(nearsideBorderPart, newNearsideSegment);
                 newFarsideSegment = this.scaleSegmentsCenter(farsideBorderPart, newFarsideSegment);
                 break;
@@ -96,6 +93,15 @@ class BorderModel extends AbstractModel {
         }
 
         return [].concat(...outputBorder);
+    }
+
+    updateBorders(borders, borderSize) {
+        this.set('borderSize', borderSize);
+        const horizontalBorder = this.scaleBorder(borders.horizontalBorder);
+        const verticalBorder = this.scaleBorder(borders.verticalBorder);
+
+        this.set('borderSegments', {horizontalBorder, verticalBorder});
+
     }
 
     static createBorderModel(borders, borderSize) {

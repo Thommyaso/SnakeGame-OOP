@@ -5,9 +5,11 @@ class GameSettingsModel extends AbstractModel {
         super();
         this.properties = {
             score: 0,
+            level: 2,
             cellCount: 10,
             isPlaying: true,
             startSpeed: 150,
+            availableSpeeds: [100, 125, 150, 175, 200, 225, 250, 275, 300],
             startingDirection: 'right',
             snakeStartingPosition: [
                 {x: 1, y: 2},
@@ -15,6 +17,13 @@ class GameSettingsModel extends AbstractModel {
                 {x: 3, y: 2},
             ],
         };
+    }
+
+    updateSettings(settings) {
+        this.set('cellCount', settings.cellCount);
+        this.set('startSpeed', settings.startSpeed);
+        this.set('level', settings.level);
+        this.fireEvent('updatedSettings');
     }
 
     updateScore() {
@@ -28,6 +37,5 @@ class GameSettingsModel extends AbstractModel {
         this.set('score', 0);
         this.fireEvent('updatedScore');
     }
-
 }
 export default GameSettingsModel;

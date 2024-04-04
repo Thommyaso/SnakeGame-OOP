@@ -26,9 +26,9 @@
     "html-webpack-tags-plugin": "^3.0.2",
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "rimraf": "^5.0.5",
     "postcss": "^8.4.32",
     "postcss-loader": "^7.3.3",
+    "rimraf": "^5.0.5",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
@@ -37,5 +37,8 @@
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.10.0",
     "webpack-spritesmith": "^1.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
   }
 }

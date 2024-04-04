@@ -12,7 +12,7 @@ class GameView extends AbstractView {
         super(model);
 
         this.rootEl = document.querySelector('#game');
-        this.borderModel = BorderModel.createBorderModel(levels.borders.level1, model.get('cellCount'));
+        this.borderModel = BorderModel.createBorderModel(levels.borders[model.get('level')], model.get('cellCount'));
         this.canvas = new Canvas(model, this.borderModel);
         this.snakeModel = new SnakeModel();
         this.foodModel = FoodModel.createFoodModel(this.snakeModel.get('bodySegments'), this.model.get('cellCount'));
@@ -23,6 +23,7 @@ class GameView extends AbstractView {
         });
         this.gameConsole = new GameConsole(this.model);
 
+        this.model.addObserver('updatedSettings', this.updateView.bind(this));
         document.addEventListener('keydown', this.keyboardControl.bind(this));
     }
 
@@ -69,18 +70,24 @@ class GameView extends AbstractView {
         this.canvas.drawBlockOnCanvas(this.foodModel.get('coordinates'));
     }
 
+    updateView() {
+        const borderLevel = this.model.get('level');
+        this.borderModel.updateBorders(levels.borders[borderLevel], this.model.get('cellCount'));
+        this.foodModel.set('highestRandomNr', this.model.get('cellCount'));
+        this.canvas.updateCanvas();
+        this.drawSnake();
+    }
+
     render() {
         this.gameConsole.render();
-        this.rootEl.appendChild(this.gameConsole.rootEl);
         this.model.addObserver('gameActivated', this.gameController.setStartingConditions.bind(this.gameController));
-
         this.canvas.render();
-        this.rootEl.appendChild(this.canvas.rootEl);
+        this.rootEl.append(this.canvas.rootEl, this.gameConsole.rootEl);
         this.snakeModel.addObserver('snakeMovement', () => {
             this.drawSnake();
         });
-        this.canvas.drawBorderOnCanvas(this.borderModel.get('borderSegments'));
         this.drawSnake();
+        this.canvas.drawBorderOnCanvas(this.borderModel.get('borderSegments'));
     }
 }
 
