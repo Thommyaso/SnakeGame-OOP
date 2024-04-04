@@ -5,7 +5,7 @@ class GameSettingsModel extends AbstractModel {
         super();
         this.properties = {
             score: 0,
-            level: 2,
+            level: 3,
             cellCount: 10,
             isPlaying: true,
             startSpeed: 150,
