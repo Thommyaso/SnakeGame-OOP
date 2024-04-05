@@ -1,6 +1,6 @@
 import AbstractView from '../Abstracts/view';
 import SnakeModel from '../Model/SnakeModel';
-import Canvas from '../View /Canvas';
+import Canvas from '../View/Canvas';
 import GameController from '../Controller/GameController';
 import FoodModel from '../Model/FoodModel';
 import BorderModel from '../Model/BorderModel';

@@ -1,6 +1,6 @@
 import './bootstrap.scss';
 import './style.scss';
-import GameView from './lib/View /GameView';
+import GameView from './lib/View/GameView';
 import GameSettingsModel from './lib/Model/GameSettingsModel';
 
 const gameSettingsModel = new GameSettingsModel();

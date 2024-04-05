@@ -9,16 +9,14 @@ class GameController extends AbstractController {
         this.borderModel = gameElements.borderModel;
         this.currentDirection = [];
         this.interval = null;
-
-        this.startInterval = this.startInterval.bind(this);
     }
 
-    setStartingConditions(timing) {
+    setStartingConditions() {
         clearInterval(this.interval);
         this.model.resetScore();
         this.currentDirection = [this.model.get('startingDirection')];
         this.snakeModel.set('bodySegments', [...this.model.get('snakeStartingPosition')]);
-        this.startInterval(timing);
+        this.startInterval(this.model.get('startSpeed'));
         this.foodModel.generateFood(this.snakeModel.get('bodySegments'));
     }
 

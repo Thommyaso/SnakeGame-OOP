@@ -8,7 +8,7 @@ class GameConsoleController extends AbstractView {
     setupStartSettings(size, speed, level) {
         this.model.updateSettings({cellCount: size, startSpeed: speed, level: level});
         this.model.set('isPlaying', true);
-        this.model.fireEvent('gameActivated', this.model.get('startSpeed'));
+        this.model.fireEvent('gameActivated');
     }
 }
 
