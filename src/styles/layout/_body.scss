@@ -1,18 +1,58 @@
-body {
-    background-color: aqua;
+.game {
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 7rem;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  
-.item {
-    background-color: azure;
-    grid-column: span 2;
+.gameConsole {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 69, 69, 0.719);
+    border-radius: 0.3rem;
+}
+
+.canvas {
+    background-color: rgb(247, 247, 247);
+}
+
+.scoreBoard {
+    display: flex;
+    width: 50%;
+    height: 140px;
+    align-items: center;
+    justify-content: center;
+}
+
+.controlBoard {
+    width: 50%;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 140px;
+    padding: 0.5rem;
+}
+
+.input{
+    box-sizing: border-box;
+    padding: 0;
+    height: 1.6rem;
+    width: 3rem;
+}
+
+.label {
+    margin-right: 0.2rem;
+}
+
+.optionsContainer {
+    height: 82px;
+    padding-left: 15%;
+    align-self:baseline;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
 }
   
