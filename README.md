@@ -1,5 +1,6 @@
 # The project's live preview is hosted on GitHub Pages and can be accessed via the following link:  https://thommyaso.github.io/SnakeGame-OOP/
 
+This repository contains a new and improved version of the Snake game, now built with Object-Oriented Programming. It shows how much I've learned since my first attempt over a year ago. You can check out the old version here: https://github.com/Thommyaso/Snake-SpaghettiCode
 
 # Project Setup:
 ## 1: 
