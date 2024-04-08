@@ -1,19 +1,37 @@
-# Webpack-boilerplate
+# The project's live preview is hosted on GitHub Pages and can be accessed via the following link:  https://thommyaso.github.io/SnakeGame-OOP/
 
+
+# Project Setup:
 ## 1: 
 In terminal, make sure you're in project's driectory
 
 ## 2: 
-If you're using nvm, in terminal, run command "nvm use" to switch to required version of node. Alternativley you can download a version of node specyfied in .nvmrc file manualy.
+If you're using nvm, in terminal, run command:
+```sh
+nvm use
+``` 
+to switch to required version of node. Alternativley you can download a version of node specyfied in .nvmrc file manualy.
 
 ## 3: 
-In terminal, run "npm install" to download all packages required for the repository.
+In terminal, run 
+```sh
+npm install
+``` 
+to download all packages required for the repository.
 
 ## 4: 
-To start live server in development mode, in terminal, run "npm run start". This will automaticaly compile all files necessary for project. This command watches and updates project live.
+To start live server in development mode, in terminal, run:
+```sh
+npm run start
+```
+This will automaticaly compile all files necessary for project. This command watches and updates project live.
 
 ## 5: 
-To build production version of the project, in terminal, run "npm run build". Project will be compiled into folder "dist".
+To build production version of the project, in terminal, run: 
+```sh
+npm run build
+```
+Project will be compiled into folder "dist".
 
 ## In build process:
 This webpack configuration is using a webpack-spritesmith plugin. It is set up to turn images located in "/src/images/sprites/" into a sprite file. It will then place that file in "dist" folder(path can be adjusted in "config/paths.js" file) together with referencing css file. Css file is automatically injected into final html file. All files in "/src/images/sprites/" folder need to have the same extension. You can set up wchich extension you want to use in file: "config/paths.js". By default it is set up to ".png" files. It is important to note that this is only for raster type images and vector type image extensions like ".svg" are not compatibile.
